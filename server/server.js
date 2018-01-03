@@ -22,14 +22,14 @@ let io = socketIO(server);
 io.on('connection', (socket) => {
   console.log('New user connection');
 
-  socket.emit('newMessage', {
-    from: 'mike@example.com',
-    text: 'Hey there',
-    createdAt: new Date()
-  });
-
   socket.on('createMessage', (msg) => {
     console.log(msg.from + ' ' + msg.createdAt + ': ' + msg.text);
+    // io.emit sends an event message to ALL open sockets
+    io.emit('newMessage', {
+      from: msg.from,
+      text: msg.text,
+      createdAt: new Date().getTime()
+    });
   });
 
   // attach individual event listeners for each connection
