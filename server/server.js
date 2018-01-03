@@ -22,6 +22,21 @@ let io = socketIO(server);
 io.on('connection', (socket) => {
   console.log('New user connection');
 
+  // emit a private message from admin welcoming user
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to the chat. Introduce yourself!',
+    createdAt: new Date().getTime()
+  });
+
+  // broadcast a message to others that the user joined
+  // this emits the event to all socket except this one
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'A new user joined the chat',
+    createdAt: new Date().getTime()
+  });
+
   socket.on('createMessage', (msg) => {
     console.log(msg.from + ' ' + msg.createdAt + ': ' + msg.text);
     // io.emit sends an event message to ALL open sockets
@@ -30,6 +45,7 @@ io.on('connection', (socket) => {
       text: msg.text,
       createdAt: new Date().getTime()
     });
+
   });
 
   // attach individual event listeners for each connection

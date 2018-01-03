@@ -14,8 +14,8 @@ socket.on('newMessage', function (msg){
   document.body.appendChild(p);
 });
 
-socket.emit('createMessage', {
-  from: 'jen@example.com',
-  text: 'hello world',
-  createdAt: new Date()
-});
+// socket.emit('createMessage', {
+//   from: 'jen@example.com',
+//   text: 'hello world',
+//   createdAt: new Date()
+// });
