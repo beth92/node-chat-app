@@ -18,15 +18,25 @@ let io = socketIO(server);
 // use on() method to add event listeners in socketIO
 // eg. when a new connection is detected, log a message
 // fires when the io() function runs in index.html
+// likely the only listener you will attach to io
 io.on('connection', (socket) => {
   console.log('New user connection');
 
-  // attach individual event listeners for each connection  
+  socket.emit('newMessage', {
+    from: 'mike@example.com',
+    text: 'Hey there',
+    createdAt: new Date()
+  });
+
+  socket.on('createMessage', (msg) => {
+    console.log(msg.from + ' ' + msg.createdAt + ': ' + msg.text);
+  });
+
+  // attach individual event listeners for each connection
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });
 });
-
 
 
 app.use(express.static(publicPath));
