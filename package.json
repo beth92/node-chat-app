@@ -10,9 +10,11 @@
   "engines": {
     "node": "8.4.0"
   },
+  "repository": "github:beth92/node-chat-app",
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
   }
 }
