@@ -8,14 +8,20 @@ socket.on('disconnect', function () {
 
 
 socket.on('newMessage', function (msg){
-  console.log('New Message', JSON.stringify(msg));
-  var p = document.createElement('p');
-  p.innerText=msg.from + ' ' + msg.createdAt + ': ' + msg.text;
-  document.body.appendChild(p);
+  var li = $('<li></li>');
+  li.text(msg.from + ': ' + msg.text);
+  $('#messages').append(li);
 });
 
-// socket.emit('createMessage', {
-//   from: 'jen@example.com',
-//   text: 'hello world',
-//   createdAt: new Date()
-// });
+$('#message-form').on('submit', function (e) {
+  // prevent default behavior of submit event (refresh)
+  e.preventDefault();
+
+  socket.emit('createMessage', {
+    from: 'user',
+    text: $('[name=message]').val(),
+    createdAt: new Date().getTime()
+  }, function (s) {
+    console.log(s);
+  });
+});

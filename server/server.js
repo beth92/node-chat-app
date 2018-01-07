@@ -32,10 +32,10 @@ io.on('connection', (socket) => {
   // this emits the event to all socket except this one
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'A new user joined the chat'));
 
-  socket.on('createMessage', (msg) => {
+  socket.on('createMessage', (msg, callback) => {
     // io.emit sends an event message to ALL open sockets
     io.emit('newMessage', generateMessage(msg.from, msg.text));
-
+    callback('Message transmitted succesfully');
   });
 
   // attach individual event listeners for each connection
