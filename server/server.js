@@ -6,7 +6,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 
 // local modules
-const {generateMessage} = require('./utils/message.js');
+const {generateMessage, generateLocationMessage} = require('./utils/message.js');
 
 const port = process.env.PORT || 3000;
 // path module eliminates redundant folder nav
@@ -36,6 +36,10 @@ io.on('connection', (socket) => {
     // io.emit sends an event message to ALL open sockets
     io.emit('newMessage', generateMessage(msg.from, msg.text));
     callback('Message transmitted succesfully');
+  });
+
+  socket.on('createLocationMessage', (coords) => {
+    io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
   });
 
   // attach individual event listeners for each connection
