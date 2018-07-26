@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-
 const expect = require('expect');
 const {generateMessage, generateLocationMessage} = require('./message');
 
