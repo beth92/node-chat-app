@@ -51,13 +51,17 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createMessage', (msg, callback) => {
+    const thisUser = users.getUser(socket.id);
     // io.emit sends an event message to ALL open sockets
-    io.emit('newMessage', generateMessage(msg.from, msg.text));
-    callback('Message transmitted succesfully');
+    if (thisUser && isRealString(msg.text)) {
+      io.to(thisUser.room).emit('newMessage', generateMessage(thisUser.name, msg.text));
+      callback('Message transmitted succesfully');
+    }
   });
 
   socket.on('createLocationMessage', (coords) => {
-    io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+    const thisUser = users.getUser(socket.id);
+    io.to(thisUser.room).emit('newLocationMessage', generateLocationMessage(thisUser.name, coords.latitude, coords.longitude));
   });
 
   // attach individual event listeners for each connection
